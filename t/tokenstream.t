@@ -81,6 +81,13 @@ EOF
 
     is_deeply($stream->next, token(opening => '(', 9),
         'get third token');
+
+    my @got = $stream->collect_upto('||');
+    is_deeply(\@got, [
+        token(identifier => 'x', 10, 1),
+        token(sym => '==', 12),
+        token(str => '"foo"', 15, 0, contents => 'foo'),
+    ], 'collect_upto stops appropriately');
 }
 
 had_no_warnings();

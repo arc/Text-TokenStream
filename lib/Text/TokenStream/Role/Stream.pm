@@ -28,5 +28,17 @@ sub collect_all {
     return @ret;
 }
 
+sub collect_upto {
+    my ($self, $target) = @_;
+
+    my @ret;
+    while (my $tok = $self->peek) {
+        last if $tok->matches($target);
+        push @ret, $self->next;
+    }
+
+    return @ret;
+}
+
 1;
 __END__
