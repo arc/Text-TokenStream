@@ -5,34 +5,37 @@ use Moo;
 
 use Carp qw(confess);
 use List::Util qw(pairmap);
-use Text::TokenStream::Types qw(Identifier);
-use Types::Standard qw(ArrayRef CycleTuple RegexpRef ScalarRef Str);
+use Text::TokenStream::Types qw(Identifier LexerRule);
+use Types::Standard qw(ArrayRef CycleTuple ScalarRef Str);
 
 use namespace::clean;
 
 has rules => (
     is => 'ro',
-    isa => CycleTuple[Identifier, RegexpRef],
+    isa => CycleTuple[Identifier, LexerRule],
     required => 1,
 );
 
 has whitespace => (
     is => 'ro',
-    isa => ArrayRef[RegexpRef],
+    isa => ArrayRef[LexerRule],
     default => sub { [] },
 );
 
 has _whitespace_rx => (is => 'lazy', init_arg => undef, builder => sub {
     my ($self) = @_;
-    my @whitespace = @{ $self->whitespace } or return qr/(*FAIL)/;
+    my @whitespace = map ref() ? $_ : quotemeta, @{ $self->whitespace }
+        or return qr/(*FAIL)/;
     local $" = '|';
     return qr/^(?:@whitespace)/;
 });
 
 has _rules_rx => (is => 'lazy', init_arg => undef, builder => sub {
     my ($self) = @_;
-    my @annotated_rules = pairmap { qr/$b(*MARK:$a)/ } @{ $self->rules }
-        or return qr/(*FAIL)/;
+    my @annotated_rules = pairmap { qr/$b(*MARK:$a)/ }
+        pairmap { $a => (ref $b ? $b : quotemeta $b) }
+        @{ $self->rules }
+            or return qr/(*FAIL)/;
     local $" = '|';
     qr/^(?|@annotated_rules)/;
 });

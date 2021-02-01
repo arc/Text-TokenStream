@@ -25,6 +25,7 @@ my $lexer = Text::TokenStream::Lexer->new(
     rules => [
         keyword => qr/(?:break|case|continue|do|else|goto|if|switch|while)\b/,
         identifier => qr/(?!\d) \w+/x,
+        eq => '(==)',
         opening => qr/[\(\[\{]/,
         closing => qr/[\}\]\)]/,
         oct => qr/0[0-7]*\b/,
@@ -54,7 +55,7 @@ sub token {
         printf("elem %d: %s\n", i, elem[i]);
     }
     */
-    if (x == "foo" || n >= arr[0x1f]) {
+    if (x (==) "foo" || n >= arr[0x1f]) {
         break ;
     }
 }
@@ -74,7 +75,7 @@ EOF
         token(keyword => 'if'),
         token(opening => '('),
         token(identifier => 'x', 1),
-        token(sym => '=='),
+        token(eq => '(==)'),
         token(str => q["foo"], 0, contents => 'foo'),
         token(sym => '||'),
         token(identifier => 'n'),

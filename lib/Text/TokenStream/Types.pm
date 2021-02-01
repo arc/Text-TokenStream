@@ -3,13 +3,14 @@ package Text::TokenStream::Types;
 use v5.12;
 use warnings;
 
-use Type::Utils qw(as class_type declare role_type where);
+use Type::Utils qw(as class_type coerce declare from role_type where via);
 use Types::Common::Numeric qw(PositiveOrZeroInt);
-use Types::Standard qw(ClassName Str);
+use Types::Standard qw(ClassName Str RegexpRef);
 
 use Type::Library -base, -declare => qw(
     Identifier
     Lexer
+    LexerRule
     Position
     Stream
     Token
@@ -22,6 +23,8 @@ declare Position, as PositiveOrZeroInt;
 
 declare TokenClass, as ClassName,
     where { $_->isa('Text::TokenStream::Token') };
+
+declare LexerRule, as RegexpRef|Str;
 
 role_type Stream, { role => 'Text::TokenStream::Role::Stream' };
 
