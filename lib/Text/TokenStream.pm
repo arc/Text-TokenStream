@@ -4,11 +4,14 @@ use v5.12;
 use Moo;
 
 use List::Util qw(max);
-use Types::Standard qw(ArrayRef Int ScalarRef Str);
+use Types::Path::Tiny qw(Path);
+use Types::Standard qw(ArrayRef Int Maybe ScalarRef Str);
 use Text::TokenStream::Token;
 use Text::TokenStream::Types qw(Lexer Position TokenClass);
 
 use namespace::clean;
+
+has input_name => (is => 'ro', isa => Maybe[Path], coerce => 1, default => undef);
 
 has input => (is => 'ro', isa => Str, required => 1);
 
@@ -125,9 +128,11 @@ sub _err {
     (my $line_suffix = substr $input, $position) =~ s/\r?\n.*//s;
     my $line_number = 1 + ($prefix =~ tr/\n//);
     my $column_number = 1 + length $line_prefix;
+    my $input_name = $self->input_name;
+    my $file_line = defined $input_name ? "File $input_name, line" : "Line";
     @message = q[Something's wrong] if !@message;
     my $message = join '', (
-        "SORRY! Line $line_number, column $column_number: ", @message, "\n",
+        "SORRY! $file_line $line_number, column $column_number: ", @message, "\n",
         $line_prefix, $line_suffix, "\n",
         $space_prefix, $marker, "\n",
     );

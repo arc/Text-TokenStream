@@ -7,6 +7,7 @@ requires 'Moo::Role';
 requires 'Type::Library';
 requires 'Type::Utils';
 requires 'Types::Common::Numeric';
+requires 'Types::Path::Tiny';
 requires 'Types::Standard';
 requires 'namespace::clean';
 
