@@ -88,6 +88,27 @@ EOF
         token(sym => '==', 12),
         token(str => '"foo"', 15, 0, contents => 'foo'),
     ], 'collect_upto stops appropriately');
+
+    # This also tests error-message generation
+    my $exn1 = exception { $stream->next_of('nope') };
+    like($exn1, qr{^SORRY! Line 2, column 20: Unexpected sym token\n\Q    if (x == "foo" || n >= arr[0x1f]) \E\{\n {19}\Q^^^^^^\E\n},
+        'next_of reports correct exception when it fails');
+
+    my $exn2 = exception { $stream->next_of('nope', 'in expression') };
+    like($exn2, qr{^SORRY! Line 2, column 20: Unexpected sym token in expression\n\Q    if (x == "foo" || n >= arr[0x1f]) \E\{\n {19}\Q^^^^^^\E\n},
+        'next_of reports correct exception when it fails, including where');
+
+    is_deeply($stream->next_of('||'), token(sym => '||', 21),
+        'next_of yields correct token');
+
+    is($stream->current_position, 23, 'current_position correct after next_of');
+    ok($stream->fill(4), 'can fill internal buffer');
+    is($stream->current_position, 23, 'fill leaves current_position unchanged');
+
+    ok(!$stream->skip_optional('nope'), 'skip_optional returns false on no match');
+    is($stream->current_position, 23, 'and leaves current_position unchanged');
+    ok($stream->skip_optional('n'), 'skip_optional returns true on match');
+    is($stream->current_position, 25, 'and advances current_position');
 }
 
 had_no_warnings();
