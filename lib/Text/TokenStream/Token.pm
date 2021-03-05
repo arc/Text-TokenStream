@@ -3,6 +3,8 @@ package Text::TokenStream::Token;
 use v5.12;
 use Moo;
 
+our $VERSION = '0.01';
+
 use Carp qw(confess);
 use Text::TokenStream::Types qw(Identifier Position);
 use Types::Standard qw(Bool HashRef Str);

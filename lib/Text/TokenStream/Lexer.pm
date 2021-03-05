@@ -3,6 +3,8 @@ package Text::TokenStream::Lexer;
 use v5.12;
 use Moo;
 
+our $VERSION = '0.01';
+
 use Carp qw(confess);
 use List::Util qw(pairmap);
 use Text::TokenStream::Types qw(Identifier LexerRule);

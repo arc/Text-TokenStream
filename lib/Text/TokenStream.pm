@@ -3,6 +3,8 @@ package Text::TokenStream;
 use v5.12;
 use Moo;
 
+our $VERSION = '0.01';
+
 use List::Util qw(max);
 use Types::Path::Tiny qw(Path);
 use Types::Standard qw(ArrayRef Int Maybe ScalarRef Str);
