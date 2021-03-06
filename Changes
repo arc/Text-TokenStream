@@ -1,4 +1,8 @@
-Revision history for Pinto::Remote::SelfContained
+Revision history for Text::TokenStream
+
+0.02    2021-03-06
+    - Specify minimum Types::Standard version for CycleTuple (reported by
+      Slaven Rezić)
 
 0.01    2021-03-05
     - Initial release
