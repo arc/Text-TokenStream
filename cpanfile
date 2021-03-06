@@ -8,7 +8,7 @@ requires 'Type::Library';
 requires 'Type::Utils';
 requires 'Types::Common::Numeric';
 requires 'Types::Path::Tiny';
-requires 'Types::Standard';
+requires 'Types::Standard', '>= 1.002000';
 requires 'namespace::clean';
 
 on 'test' => sub {
