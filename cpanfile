@@ -2,7 +2,7 @@ requires 'perl', '>= 5.012';
 
 requires 'Carp';
 requires 'List::Util', '>= 1.29';
-requires 'Moo';
+requires 'Moo', '>= 1.006000';
 requires 'Moo::Role';
 requires 'Type::Library';
 requires 'Type::Utils';
