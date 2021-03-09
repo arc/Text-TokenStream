@@ -3,7 +3,7 @@ package Text::TokenStream;
 use v5.12;
 use Moo;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 use List::Util qw(max);
 use Types::Path::Tiny qw(Path);
